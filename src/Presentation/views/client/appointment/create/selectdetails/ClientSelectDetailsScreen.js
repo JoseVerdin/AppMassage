@@ -74,6 +74,7 @@ export const ClientSelectDetailsScreen = () => {
                 key={option.id || index}
                 onPress={() =>
                   setSelectedOption({
+                    id: option.id,
                     duracion: option.duracion,
                     precio: option.precio,
                   })

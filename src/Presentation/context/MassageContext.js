@@ -36,7 +36,7 @@ export const MassageProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error("Error in create:", error);
-      throw error; // Re-throw the error to be caught in the view model
+      throw error;
     }
   };
 

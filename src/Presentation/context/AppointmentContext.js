@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { GetAllAppointmentUseCase } from "../../Domain/useCases/appointment/GetAllAppointment";
+import { CreateAppointmentUseCase } from "../../Domain/useCases/appointment/CreateAppointment";
 
 export const AppointmentContext = createContext({});
 
@@ -22,11 +23,23 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
+  const create = async (appointment) => {
+    try {
+      const response = await CreateAppointmentUseCase(appointment);
+      getMassages();
+      return response;
+    } catch (error) {
+      console.error("Error in create:", error);
+      throw error; // Re-throw the error to be caught in the view model
+    }
+  };
+
   return (
     <AppointmentContext.Provider
       value={{
         massages,
         getMassages,
+        create,
       }}
     >
       {children}

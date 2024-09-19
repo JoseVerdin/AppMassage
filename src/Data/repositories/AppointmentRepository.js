@@ -14,4 +14,18 @@ export class AppointmentRepositoryImpl {
       return Promise.resolve([]);
     }
   }
+
+  async create(appointment) {
+    try {
+      const response = await ApiMassage.post(
+        "/appointment/create",
+        appointment,
+      );
+      return Promise.resolve(response.data);
+    } catch (error) {
+      console.log("ERROR: " + JSON.stringify(error.response?.data));
+      const apiError = JSON.parse(JSON.stringify(error.response?.data));
+      return Promise.resolve(apiError);
+    }
+  }
 }

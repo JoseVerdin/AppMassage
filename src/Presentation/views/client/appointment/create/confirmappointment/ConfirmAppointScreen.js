@@ -1,23 +1,39 @@
-import { Text, TextInput, View, Button, Pressable } from "react-native";
-import React, { useState } from "react";
+import {
+  Text,
+  TextInput,
+  View,
+  Button,
+  Pressable,
+  ToastAndroid,
+} from "react-native";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import useViewModel from "./ViewModel";
 
-export const ConfirmAppointScreen = ({ route }) => {
-  const { personSelections } = route.params;
+export const ConfirmAppointScreen = ({ route, navigation }) => {
+  const {
+    direccion,
+    responseMessage,
+    total,
+    personSelections,
+    date,
+    showDatePicker,
+    showTimePicker,
+    setShowDatePicker,
+    setShowTimePicker,
+    onChange,
+    onChangeDate,
+    handleConfirmAppointment,
+  } = useViewModel({ route, navigation });
+
   console.log("Person Selections:", JSON.stringify(personSelections, null, 2));
 
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-
-  const onChange = (e, selectedDate) => {
-    if (selectedDate) {
-      setDate(selectedDate);
+  useEffect(() => {
+    if (responseMessage !== "") {
+      ToastAndroid.show(responseMessage, ToastAndroid.LONG);
     }
-    setShowDatePicker(false); // Hide date picker
-    setShowTimePicker(false); // Hide time picker
-  };
+  }, [responseMessage]);
 
   return (
     <SafeAreaView>
@@ -36,24 +52,21 @@ export const ConfirmAppointScreen = ({ route }) => {
             marginTop: 8,
           }}
           multiline={true}
-        ></TextInput>
+          onChangeText={(text) => onChange("direccion", text)}
+          value={direccion}
+        />
       </View>
 
       <View style={{ margin: 15, padding: 10 }}>
         <Text>Selected date:</Text>
-        <Button
-          title="Select Date"
-          onPress={() => setShowDatePicker(true)}
-          style={{}}
-        />
-
+        <Button title="Select Date" onPress={() => setShowDatePicker(true)} />
         {showDatePicker && (
           <DateTimePicker
             value={date}
             mode={"date"}
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={onChangeDate}
           />
         )}
         <Text>{date.toDateString()}</Text>
@@ -68,14 +81,21 @@ export const ConfirmAppointScreen = ({ route }) => {
             mode={"time"}
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={onChangeDate}
           />
         )}
         <Text>{date.toLocaleTimeString()}</Text>
       </View>
 
+      {/* Mostrar el total a pagar */}
+      <View style={{ margin: 15, padding: 10 }}>
+        <Text style={{ fontSize: 18, fontWeight: "600" }}>
+          Total to Pay: ${total.toFixed(2)}
+        </Text>
+      </View>
+
       <Pressable
-        //onPress={}
+        onPress={handleConfirmAppointment}
         style={{
           justifyContent: "center",
           backgroundColor: "#9bcadc",
@@ -93,7 +113,7 @@ export const ConfirmAppointScreen = ({ route }) => {
             textAlign: "center",
           }}
         >
-          Continue
+          Confirm Appointment
         </Text>
       </Pressable>
     </SafeAreaView>
