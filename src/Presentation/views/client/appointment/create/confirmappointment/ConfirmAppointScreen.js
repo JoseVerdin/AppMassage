@@ -45,11 +45,12 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
           placeholder="Your address"
           style={{
             width: "100%",
-            height: 100,
+            height: 150,
             borderColor: "gray",
             borderWidth: 0.7,
             borderRadius: 5,
             marginTop: 8,
+            padding: 6,
           }}
           multiline={true}
           onChangeText={(text) => onChange("direccion", text)}
@@ -57,9 +58,29 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
         />
       </View>
 
-      <View style={{ margin: 15, padding: 10 }}>
-        <Text>Selected date:</Text>
-        <Button title="Select Date" onPress={() => setShowDatePicker(true)} />
+      <View
+        style={{
+          margin: 15,
+          padding: 10,
+          borderWidth: 1,
+          borderColor: "lightgray",
+          borderRadius: 5,
+        }}
+      >
+        <Text style={{ fontSize: 15, fontWeight: "500" }}>Selected date:</Text>
+        <Pressable
+          onPress={() => setShowDatePicker(true)}
+          style={{
+            backgroundColor: "#9bcadc",
+            padding: 10,
+            borderRadius: 5,
+            marginTop: 5,
+          }}
+        >
+          <Text style={{ color: "white", textAlign: "center" }}>
+            Select Date
+          </Text>
+        </Pressable>
         {showDatePicker && (
           <DateTimePicker
             value={date}
@@ -69,12 +90,32 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
             onChange={onChangeDate}
           />
         )}
-        <Text>{date.toDateString()}</Text>
+        <Text style={{ marginTop: 10 }}>{date.toDateString()}</Text>
       </View>
 
-      <View style={{ margin: 15, padding: 10 }}>
-        <Text>Selected time:</Text>
-        <Button title="Select Time" onPress={() => setShowTimePicker(true)} />
+      <View
+        style={{
+          margin: 15,
+          padding: 10,
+          borderWidth: 1,
+          borderColor: "lightgray",
+          borderRadius: 5,
+        }}
+      >
+        <Text style={{ fontSize: 15, fontWeight: "500" }}>Selected time:</Text>
+        <Pressable
+          onPress={() => setShowTimePicker(true)}
+          style={{
+            backgroundColor: "#9bcadc",
+            padding: 10,
+            borderRadius: 5,
+            marginTop: 5,
+          }}
+        >
+          <Text style={{ color: "white", textAlign: "center" }}>
+            Select Time
+          </Text>
+        </Pressable>
         {showTimePicker && (
           <DateTimePicker
             value={date}
@@ -84,11 +125,11 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
             onChange={onChangeDate}
           />
         )}
-        <Text>{date.toLocaleTimeString()}</Text>
+        <Text style={{ marginTop: 10 }}>{date.toLocaleTimeString()}</Text>
       </View>
 
       {/* Mostrar el total a pagar */}
-      <View style={{ margin: 15, padding: 10 }}>
+      <View style={{ margin: 15, padding: 10, marginTop: 60 }}>
         <Text style={{ fontSize: 18, fontWeight: "600" }}>
           Total to Pay: ${total.toFixed(2)}
         </Text>
@@ -98,11 +139,10 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
         onPress={handleConfirmAppointment}
         style={{
           justifyContent: "center",
-          backgroundColor: "#9bcadc",
+          backgroundColor: "#06b1f0",
           padding: 10,
           margin: 15,
           borderRadius: 5,
-          marginTop: 100,
         }}
       >
         <Text
@@ -113,7 +153,7 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
             textAlign: "center",
           }}
         >
-          Confirm Appointment
+          CONTINUE
         </Text>
       </Pressable>
     </SafeAreaView>

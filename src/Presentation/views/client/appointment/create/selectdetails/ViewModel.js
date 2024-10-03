@@ -1,10 +1,10 @@
 import { useContext, useState, useCallback, useEffect } from "react";
-import { AppointmentContext } from "../../../../../context/AppointmentContext";
+import { AppointmentDetailsContext } from "../../../../../context/AppointmentDetailsContext";
 import { useNavigation } from "@react-navigation/native";
 import { Alert } from "react-native";
 
 const ClientAppointmentViewModel = (route) => {
-  const { massages, getMassages } = useContext(AppointmentContext);
+  const { massages, getMassages } = useContext(AppointmentDetailsContext);
   const navigation = useNavigation();
 
   const {
@@ -24,6 +24,14 @@ const ClientAppointmentViewModel = (route) => {
   );
   const [localNote, setLocalNote] = useState(initialNote || "");
   const parsedQuantity = parseInt(quantity, 10);
+
+  const resetData = () => {
+    setSelectedMassage(null);
+    setSelectedOption(null);
+    setCurrentPerson(1);
+    setPersonSelections({});
+    setLocalNote("");
+  };
 
   useEffect(() => {
     const fetchMassages = async () => {
@@ -138,6 +146,7 @@ const ClientAppointmentViewModel = (route) => {
           },
         },
       });
+      resetData();
     }
   }, [
     selectedMassage,

@@ -87,7 +87,7 @@ const AdminMassageCreateViewModel = () => {
     }
   };
 
-  const resetForm = async () => {
+  const resetForm = () => {
     setValues({
       nombre: "",
       descripcion: "",

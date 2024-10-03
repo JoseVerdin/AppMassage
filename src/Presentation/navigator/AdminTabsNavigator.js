@@ -6,9 +6,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 //import { AdminMassageListScreen } from "../views/admin/list/MassageList";
-import { BookingList } from "../views/admin/booking/BookingList";
 import ProfileScreen from "../views/profile/ProfileScreen";
 import { AdminMassageNavigator } from "./AdminMassageNavigator";
+import { AdminBookingNavigator } from "./AdminBookingNavigator";
 import { TouchableOpacity, Image } from "react-native";
 
 export const AdminTabsNavigator = () => {
@@ -24,6 +24,7 @@ export const AdminTabsNavigator = () => {
         component={AdminMassageNavigator}
         options={({ route, navigation }) => ({
           title: "Massages",
+          tabBarActiveTintColor: "#06b1f0",
           headerTitleStyle: { color: "white", fontWeight: "bold" },
           tabBarLabel: "Massages",
           tabBarIcon: ({ focused }) =>
@@ -56,10 +57,10 @@ export const AdminTabsNavigator = () => {
       />
 
       <Tab.Screen
-        name="BookingList"
-        component={BookingList}
+        name="AdminBookingNavigator"
+        component={AdminBookingNavigator}
         options={{
-          tabBarLabel: "Bokkings",
+          tabBarLabel: "Bookings",
           tabBarActiveTintColor: "#06b1f0",
           headerShown: false,
           tabBarIcon: ({ focused }) =>

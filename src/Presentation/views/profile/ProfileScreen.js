@@ -1,4 +1,4 @@
-import { Text, Pressable, Image, View } from "react-native";
+import { Text, Pressable, Image, View, Alert } from "react-native";
 import React, { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../../context/UserContext";
@@ -8,31 +8,73 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const { user, removeUserSessionContext } = useContext(UserContext);
   const Logout = async () => {
-    try {
-      await removeUserSessionContext(); // Limpia la sesión del usuario
-      navigation.navigate("Login"); // Navega a la pantalla de login
-    } catch (error) {
-      console.error("Error al cerrar sesión: ", error);
-    }
+    Alert.alert(
+      "Confirm Logout", // Título del alert
+      "Are you sure you want to log out?", // Mensaje del alert
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Logout cancelled"),
+          style: "cancel",
+        },
+        {
+          text: "Logout",
+          onPress: async () => {
+            try {
+              await removeUserSessionContext();
+              navigation.navigate("Login");
+            } catch (error) {
+              console.error("Error al cerrar sesión: ", error);
+            }
+          },
+        },
+      ],
+      { cancelable: false },
+    );
   };
+  const isAdmin = user?.roles?.some((role) => role.name === "ADMIN");
   return (
     <View style={styles.container}>
       <Image
         source={require("../../../../assets/spa.jpg")}
         style={styles.imageBackground}
       />
-
-      <Pressable
-        style={styles.logout}
-        onPress={() => {
-          Logout();
-        }}
-      >
-        <Image
-          source={require("../../../../assets/logout.png")}
-          style={styles.logoutImage}
-        />
-      </Pressable>
+      {isAdmin ? (
+        <View style={{ position: "absolute", top: 0, right: 0 }}>
+          <Pressable
+            style={styles.logout}
+            onPress={() => {
+              Logout();
+            }}
+          >
+            <Image
+              source={require("../../../../assets/logout.png")}
+              style={styles.logoutImage}
+            />
+          </Pressable>
+          <Pressable
+            style={styles.change}
+            onPress={() => navigation.replace("Roles")}
+          >
+            <Image
+              source={require("../../../../assets/exchange.png")}
+              style={styles.logoutImage}
+            />
+          </Pressable>
+        </View>
+      ) : (
+        <Pressable
+          style={styles.logout}
+          onPress={() => {
+            Logout();
+          }}
+        >
+          <Image
+            source={require("../../../../assets/logout.png")}
+            style={styles.logoutImage}
+          />
+        </Pressable>
+      )}
 
       <View style={styles.logoContainer}>
         {user?.imagen !== "" && (

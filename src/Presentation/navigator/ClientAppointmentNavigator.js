@@ -5,8 +5,10 @@ import { ClientSelectDetailsScreen } from "../views/client/appointment/create/se
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AppointmentProvider } from "../context/AppointmentContext";
+import { AppointmentDetailsProvider } from "../context/AppointmentDetailsContext";
 import { ClientNotesScreen } from "../views/client/appointment/create/notes/NotesScreen";
 import { ConfirmAppointScreen } from "../views/client/appointment/create/confirmappointment/ConfirmAppointScreen";
+import { SuccessfulAppointment } from "../views/client/appointment/create/successfulappointment/SuccessfulAppointment";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,11 +55,15 @@ export const ClientAppointmentNavigator = () => {
           name="ConfirmAppointScreen"
           component={ConfirmAppointScreen}
         />
+        <Stack.Screen
+          name="SuccessfulAppointment"
+          component={SuccessfulAppointment}
+        />
       </Stack.Navigator>
     </AppointmentState>
   );
 };
 
 const AppointmentState = ({ children }) => {
-  return <AppointmentProvider>{children}</AppointmentProvider>;
+  return <AppointmentDetailsProvider>{children}</AppointmentDetailsProvider>;
 };

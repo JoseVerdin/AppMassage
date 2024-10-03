@@ -1,6 +1,6 @@
-import { useState, useContext } from "react";
-import { AppointmentContext } from "../../../../../context/AppointmentContext";
-import { MassageContext } from "../../../../../context/MassageContext";
+import { useState, useContext, useEffect } from "react";
+import { Alert } from "react-native";
+import { AppointmentDetailsContext } from "../../../../../context/AppointmentDetailsContext";
 import { UserContext } from "../../../../../context/UserContext";
 
 const calculateTotal = (personSelections) => {
@@ -13,9 +13,18 @@ const calculateTotal = (personSelections) => {
 
 const ConfirmAppointViewModel = ({ route, navigation }) => {
   const { personSelections } = route.params;
-  const { create } = useContext(AppointmentContext);
-  const { massages } = useContext(MassageContext);
+  //const { create } = useContext(AppointmentContext);
   const { user } = useContext(UserContext);
+  const { refreshAppointmentDetails, create } = useContext(
+    AppointmentDetailsContext,
+  );
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+  useEffect(() => {
+    if (shouldRefresh) {
+      refreshAppointmentDetails();
+      setShouldRefresh(false); // Resetea el flag después de la actualización
+    }
+  }, [shouldRefresh]);
 
   const [values, setValues] = useState({
     user_id: "",
@@ -44,9 +53,13 @@ const ConfirmAppointViewModel = ({ route, navigation }) => {
     setShowTimePicker(false); // Hide time picker
   };
 
-  const total = calculateTotal(personSelections);
+  const total = personSelections ? calculateTotal(personSelections) : 0;
 
   const handleConfirmAppointment = async () => {
+    if (!values.direccion || !date) {
+      Alert.alert("Please enter the address and select the date and time.");
+      return; // Detener la ejecución si falta información
+    }
     // Itera sobre cada selección de persona para crear múltiples citas
     const appointments = Object.keys(personSelections).map((key) => {
       const person = personSelections[key];
@@ -68,16 +81,34 @@ const ConfirmAppointViewModel = ({ route, navigation }) => {
     const appointmentData = {
       appointments: JSON.stringify(appointments),
     };
-    console.log("Appointment data to be inserted:", appointmentData);
 
     try {
-      const response = await create(appointmentData); // Envía al backend
+      const response = await create(appointmentData);
+      setShouldRefresh(true);
+      navigation.replace("SuccessfulAppointment");
       setResponseMessage(response.message);
-      //navigation.navigate("Home");
+      reset();
     } catch (error) {
       console.error("Error creating appointment:", error);
       setResponseMessage(error.message || "Error al crear el masaje");
     }
+  };
+
+  const reset = () => {
+    setValues({
+      user_id: "",
+      massage_id: "",
+      opcion_id: "",
+      precio: "",
+      fecha: "",
+      cantidad_personas: "",
+      notas: "",
+      direccion: "",
+    });
+    setDate(new Date()); // Restablecer la fecha a la actual
+    setResponseMessage(""); // Limpiar el mensaje de respuesta
+    setShowDatePicker(false);
+    setShowTimePicker(false);
   };
 
   return {

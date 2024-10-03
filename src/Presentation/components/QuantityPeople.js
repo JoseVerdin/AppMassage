@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, View, Text } from "react-native";
+import { Pressable, ScrollView, View, Text } from "react-native";
 import React, { useState } from "react";
 
 const QuantityPeople = ({ onSelectQuantity }) => {
@@ -14,7 +14,7 @@ const QuantityPeople = ({ onSelectQuantity }) => {
     { id: "8", value: "9" },
     { id: "9", value: "10" },
   ];
-  const [selectedQuantity, setSelectedQuantity] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(0);
   return (
     <View style={{ margin: 10, padding: 10 }}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -54,5 +54,3 @@ const QuantityPeople = ({ onSelectQuantity }) => {
 };
 
 export default QuantityPeople;
-
-const styles = StyleSheet.create({});

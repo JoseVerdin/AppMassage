@@ -73,6 +73,12 @@ const ProfileInfoStyles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  change: {
+    position: "absolute",
+    alignSelf: "center",
+    top: 100,
+    right: 15,
+  },
 });
 
 export default ProfileInfoStyles;

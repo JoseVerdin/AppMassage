@@ -3,13 +3,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { Fontisto } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import HomeScreen from "../views/HomeScreen";
-import TherapistScreen from "../views/TherapistScreen";
 import StoreScreen from "../views/StoreScreen";
 import ProfileScreen from "../views/profile/ProfileScreen";
 import { ClientAppointmentNavigator } from "../navigator/ClientAppointmentNavigator";
+import { ClientBookingNavigator } from "../navigator/ClientBookingNavigator";
 
 export const ClientTabsNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -52,38 +52,18 @@ export const ClientTabsNavigator = () => {
       />
 
       <Tab.Screen
-        name="Therapist"
-        component={TherapistScreen}
+        name="ClientBookingNavigator"
+        component={ClientBookingNavigator}
         options={{
-          tabBarLabel: "Therapists",
+          tabBarLabel: "Bookings",
           tabBarActiveTintColor: "#06b1f0",
           headerShown: false,
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <Fontisto name="person" size={24} color="#06b1f0" />
-            ) : (
-              <Ionicons name="person-outline" size={24} color="black" />
-            ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Store"
-        component={StoreScreen}
-        options={{
-          tabBarLabel: "Store",
-          tabBarActiveTintColor: "#06b1f0",
-          headerShown: false,
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <MaterialCommunityIcons
-                name="storefront"
-                size={24}
-                color="#06b1f0"
-              />
+              <FontAwesome5 name="bed" size={24} color="#06b1f0" />
             ) : (
               <MaterialCommunityIcons
-                name="storefront-outline"
+                name="bed-outline"
                 size={24}
                 color="black"
               />

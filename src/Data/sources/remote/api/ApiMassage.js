@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const ApiMassage = axios.create({
-  baseURL: "http://192.168.1.103:3000/api",
+  baseURL: "http://192.168.100.182:3000/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -17,7 +17,7 @@ ApiMassage.interceptors.response.use((response) => {
 });
 
 const ApiMassageForImage = axios.create({
-  baseURL: "http://192.168.1.103:3000/api",
+  baseURL: "http://192.168.100.182:3000/api",
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",
