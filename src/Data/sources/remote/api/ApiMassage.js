@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const ApiMassage = axios.create({
-  baseURL: "http://192.168.100.182:3000/api",
+  baseURL: "backendapp-production-9364.up.railway.app",
   headers: {
     "Content-Type": "application/json",
   },
@@ -17,7 +17,7 @@ ApiMassage.interceptors.response.use((response) => {
 });
 
 const ApiMassageForImage = axios.create({
-  baseURL: "http://192.168.100.182:3000/api",
+  baseURL: "backendapp-production-9364.up.railway.app",
   headers: {
     "Content-type": "multipart/form-data",
     accept: "application/json",
