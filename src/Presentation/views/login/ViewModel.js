@@ -26,6 +26,7 @@ const LoginViewModel = () => {
         //console.log("Datos del usuario a guardar: ", userData);
         await saveUserSessionContext(userData);
       } else {
+        Alert.alert("Password or Email incorrect");
         setErrorMessage(response.message);
       }
     }
