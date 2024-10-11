@@ -1,14 +1,16 @@
 import { ScrollView, Text, View, Image } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Styles";
 import useViewModel from "./ViewModel";
+import { UserContext } from "../../../../context/UserContext";
 
 export const ClientBookingDetailScreen = ({ route }) => {
   const { appointmentDetails } = route.params;
+  const { user } = useContext(UserContext);
   const details = appointmentDetails.detalles_citas;
-  console.log("DETAILSAPPOINTMENT: " + JSON.stringify(details, null, 2));
+  //console.log("DETAILSAPPOINTMENT: " + JSON.stringify(details, null, 2));
   const { total } = useViewModel({ route });
-  console.log("TOTAL: " + JSON.stringify(total));
+  //console.log("TOTAL: " + JSON.stringify(total));
   return (
     <View style={styles.container}>
       <View style={styles.productImage}>
@@ -58,6 +60,10 @@ export const ClientBookingDetailScreen = ({ route }) => {
             Cantidad masajes: {details[0].personas}
           </Text>
           <Text style={styles.descriptionContent}>Precio total: ${total}</Text>
+          <View style={styles.divider}></View>
+          <Text style={styles.descriptionContent}>
+            Phone Number: {user.telefono}
+          </Text>
           <View style={styles.divider}></View>
         </View>
       </ScrollView>

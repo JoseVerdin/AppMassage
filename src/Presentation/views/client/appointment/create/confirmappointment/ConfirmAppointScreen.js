@@ -1,11 +1,4 @@
-import {
-  Text,
-  TextInput,
-  View,
-  Button,
-  Pressable,
-  ToastAndroid,
-} from "react-native";
+import { Text, TextInput, View, Pressable, ToastAndroid } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -16,6 +9,7 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
     direccion,
     responseMessage,
     total,
+    bookedSlots,
     personSelections,
     date,
     showDatePicker,
@@ -27,7 +21,9 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
     handleConfirmAppointment,
   } = useViewModel({ route, navigation });
 
-  console.log("Person Selections:", JSON.stringify(personSelections, null, 2));
+  //console.log("Fechas: " + JSON.stringify(bookedSlots));
+
+  //console.log("Person Selections:", JSON.stringify(personSelections, null, 2));
 
   useEffect(() => {
     if (responseMessage !== "") {
@@ -88,6 +84,7 @@ export const ConfirmAppointScreen = ({ route, navigation }) => {
             is24Hour={true}
             display="default"
             onChange={onChangeDate}
+            minimumDate={new Date()}
           />
         )}
         <Text style={{ marginTop: 10 }}>{date.toDateString()}</Text>

@@ -15,9 +15,10 @@ const ConfirmAppointViewModel = ({ route, navigation }) => {
   const { personSelections } = route.params;
   //const { create } = useContext(AppointmentContext);
   const { user } = useContext(UserContext);
-  const { refreshAppointmentDetails, create } = useContext(
+  const { refreshAppointmentDetails, create, bookedSlots } = useContext(
     AppointmentDetailsContext,
   );
+  console.log("DATES: " + JSON.stringify(bookedSlots));
   const [shouldRefresh, setShouldRefresh] = useState(false);
   useEffect(() => {
     if (shouldRefresh) {
@@ -45,12 +46,50 @@ const ConfirmAppointViewModel = ({ route, navigation }) => {
     setValues({ ...values, [property]: value });
   };
 
-  const onChangeDate = (e, selectedDate) => {
+  const isDateDisabled = (testDate) => {
+    const testDateStr = testDate.toISOString().split("T")[0];
+    return bookedSlots.some((slot) => slot.date === testDateStr);
+  };
+
+  const isTimeDisabled = (testDate) => {
+    const testDateStr = testDate.toISOString().split("T")[0];
+    const testTimeStr = testDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    return bookedSlots.some(
+      (slot) => slot.date === testDateStr && slot.time === testTimeStr,
+    );
+  };
+
+  const onChangeDate = (event, selectedDate) => {
     if (selectedDate) {
-      setDate(selectedDate);
+      if (showDatePicker) {
+        if (isDateDisabled(selectedDate)) {
+          Alert.alert(
+            "Fecha Reservada",
+            "Esta fecha ya está reservada. Por favor, elige otra.",
+          );
+          return;
+        }
+        setDate(selectedDate);
+        setShowDatePicker(false);
+      } else if (showTimePicker) {
+        if (isTimeDisabled(selectedDate)) {
+          Alert.alert(
+            "Hora Reservada",
+            "Esta hora ya está reservada. Por favor, elige otra.",
+          );
+          return;
+        }
+        setDate(selectedDate);
+        setShowTimePicker(false);
+      }
+    } else {
+      setShowDatePicker(false);
+      setShowTimePicker(false);
     }
-    setShowDatePicker(false); // Hide date picker
-    setShowTimePicker(false); // Hide time picker
   };
 
   const total = personSelections ? calculateTotal(personSelections) : 0;
@@ -115,6 +154,7 @@ const ConfirmAppointViewModel = ({ route, navigation }) => {
     ...values,
     responseMessage,
     total,
+    bookedSlots,
     personSelections,
     date,
     showDatePicker,

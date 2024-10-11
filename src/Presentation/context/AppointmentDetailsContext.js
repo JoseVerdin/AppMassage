@@ -6,6 +6,7 @@ import { UpdateToStatusAppointmentUseCase } from "../../Domain/useCases/appointm
 import { GetAllAppointmentUseCase } from "../../Domain/useCases/appointment/GetAllAppointment";
 import { CreateAppointmentUseCase } from "../../Domain/useCases/appointment/CreateAppointment";
 import { DeleteAppointmentUseCase } from "../../Domain/useCases/appointment/DeleteAppointment";
+import { GetDateAppointmentUseCase } from "../../Domain/useCases/appointment/GetDateAppointment";
 import { UserContext } from "../context/UserContext";
 
 export const AppointmentDetailsContext = createContext({});
@@ -15,6 +16,22 @@ export const AppointmentDetailsProvider = ({ children }) => {
   const [appointmentDetails, setAppointmentDetails] = useState([]);
   const [appointmentDetailsId, setAppointmentDetailsId] = useState([]);
   const [massages, setMassages] = useState([]);
+  const [bookedSlots, setBookedSlots] = useState([]);
+
+  useEffect(() => {
+    const fetchBookedSlots = async () => {
+      const result = await GetDateAppointmentUseCase();
+      console.log("Resultado del context getDateAppointment: ", result); // Este console.log debe mostrar las fechas
+      if (result && result.length > 0) {
+        setBookedSlots(result);
+        console.log("Fechas obtenidas:", result); // Aquí también podrías verificar si hay datos
+      } else {
+        console.log("No se recibieron fechas");
+      }
+    };
+
+    fetchBookedSlots();
+  }, []); // Asegúrate de que este useEffect no esté perdiendo dependencias
 
   useEffect(() => {
     if (massages.length === 0) {
@@ -44,9 +61,9 @@ export const AppointmentDetailsProvider = ({ children }) => {
     const result = await GetAllAppointmentUseCase();
     if (result && result.length > 0) {
       setMassages(result);
-      console.log("Se han establecido los masajes");
+      //console.log("Se han establecido los masajes");
     } else {
-      console.log("No se recibieron masajes");
+      //console.log("No se recibieron masajes");
     }
   };
 
@@ -58,7 +75,7 @@ export const AppointmentDetailsProvider = ({ children }) => {
       await FindByIdAppointmentDetails(user.id);
       return response;
     } catch (error) {
-      console.error("Error in create:", error);
+      //console.error("Error in create:", error);
       throw error; // Re-throw the error to be caught in the view model
     }
   };
@@ -74,15 +91,36 @@ export const AppointmentDetailsProvider = ({ children }) => {
     }
   };
 
+  const getDateAppointment = async () => {
+    const result = await GetDateAppointmentUseCase();
+    console.log("Resultado del context getDateAppointment: ", result);
+    if (result && result.length > 0) {
+      const parsedSlots = result.map((slot) => {
+        const dateObj = new Date(slot.fecha);
+        const date = dateObj.toISOString().split("T")[0]; // '2024-10-09'
+        const time = dateObj.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }); // '10:00'
+        return { date, time };
+      });
+      setBookedSlots(parsedSlots);
+      console.log("Se han establecido las fechas:", parsedSlots);
+    } else {
+      console.log("No se recibieron fechas");
+    }
+  };
+
   const FindByIdAppointmentDetails = async (id) => {
     const result = await FindByIdAppointmentDetailsUseCase(id);
-    console.log("Resultado del context con id:", result);
+    //console.log("Resultado del context con id:", result);
     if (result && result.data && result.data.length > 0) {
       setAppointmentDetailsId(result.data); // Acceder a la propiedad 'data'
-      console.log("Se han establecido las reservas con id");
+      //console.log("Se han establecido las reservas con id");
       return result.data;
     } else {
-      console.log("No se recibieron reservas con id");
+      //console.log("No se recibieron reservas con id");
     }
   };
 
@@ -113,9 +151,9 @@ export const AppointmentDetailsProvider = ({ children }) => {
               const response = await DeleteAppointmentUseCase(direccion);
               await getAppointmentDetails();
               await FindByIdAppointmentDetails(user.id);
-              console.log("Deleted successfully:", response);
+              //console.log("Deleted successfully:", response);
             } catch (error) {
-              console.error("Error deleting appointments:", error);
+              //console.error("Error deleting appointments:", error);
               throw error; // Manejo de error
             }
           },
@@ -127,7 +165,7 @@ export const AppointmentDetailsProvider = ({ children }) => {
   const refreshAppointmentDetails = async () => {
     if (user.id) {
       const result = await FindByIdAppointmentDetails(user.id);
-      console.log("Refreshed appointments:", result);
+      //console.log("Refreshed appointments:", result);
       return result;
     }
   };
@@ -137,9 +175,11 @@ export const AppointmentDetailsProvider = ({ children }) => {
         massages,
         appointmentDetails,
         appointmentDetailsId,
+        bookedSlots,
         getMassages,
         create,
         getAppointmentDetails,
+        getDateAppointment,
         FindByIdAppointmentDetails,
         updateToStatus,
         DeleteToAddress,

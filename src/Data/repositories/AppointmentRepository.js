@@ -15,6 +15,18 @@ export class AppointmentRepositoryImpl {
     }
   }
 
+  async getDate() {
+    try {
+      const response = await ApiMassage.get("/appointment/getDate");
+      console.log("Respuesta completa GetDate:", response.data);
+      return Promise.resolve(response.data);
+    } catch (error) {
+      let e = error;
+      console.log("ERROR: " + JSON.stringify(e.response?.data));
+      return Promise.resolve([]);
+    }
+  }
+
   async create(appointment) {
     try {
       const response = await ApiMassage.post(
