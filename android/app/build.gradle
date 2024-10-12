@@ -118,6 +118,12 @@ android {
         versionName "1.0.0"
     }
     signingConfigs {
+        release {
+            storeFile file('app-release-key.keystore')
+            storePassword 'chema-11'
+            keyAlias 'androiddebugkey'
+            keyPassword 'chema-11'
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
