@@ -124,12 +124,6 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'chema-11'
         }
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
     }
     buildTypes {
         debug {
