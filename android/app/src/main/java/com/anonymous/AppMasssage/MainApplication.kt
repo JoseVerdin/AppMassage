@@ -1,4 +1,4 @@
-package App.Masssage
+package com.example.ccalmspa
 
 import android.app.Application
 import android.content.res.Configuration
