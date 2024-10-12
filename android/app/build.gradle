@@ -109,9 +109,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.AppMasssage'
+    namespace 'AppMasssage'
     defaultConfig {
-        applicationId 'com.anonymous.AppMasssage'
+        applicationId 'AppMasssage'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
