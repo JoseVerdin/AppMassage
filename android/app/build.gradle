@@ -119,9 +119,9 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('app-release-key.keystore')
+            storeFile file('new-upload-key.jks')
             storePassword 'chema-11'
-            keyAlias 'androiddebugkey'
+            keyAlias 'upload'
             keyPassword 'chema-11'
         }
         debug {
