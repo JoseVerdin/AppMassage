@@ -1,4 +1,4 @@
-package com.example.ccalmspa
+package com.ccalm.spa
 
 import android.os.Build
 import android.os.Bundle
